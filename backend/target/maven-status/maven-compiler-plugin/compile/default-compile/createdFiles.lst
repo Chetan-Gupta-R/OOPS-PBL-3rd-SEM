@@ -2,6 +2,7 @@ com\gmu\erp\AuthController$LoginRequest.class
 com\gmu\erp\HealthController$AttendanceRequest.class
 com\gmu\erp\HealthController$EnrollmentRequest.class
 com\gmu\erp\GmuErpApplication.class
+com\gmu\erp\HealthController$ScheduleRequest.class
 com\gmu\erp\HealthController$StudentRequest.class
 com\gmu\erp\HealthController$PaymentRequest.class
 com\gmu\erp\PasswordConfig.class

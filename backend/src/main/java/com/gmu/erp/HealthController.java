@@ -136,6 +136,20 @@ public class HealthController {
         return Map.of("message", "Examination created successfully");
     }
 
+    @GetMapping("/timetable")
+    public List<Map<String, Object>> timetable(@RequestParam(required = false) String email, @RequestParam(required = false) String role) {
+        String base = "SELECT cs.id,s.name AS subject,c.name AS course,u.full_name AS faculty,cs.semester,cs.room,cs.weekday,cs.start_time AS startTime,cs.end_time AS endTime FROM class_schedules cs JOIN subjects s ON s.id=cs.subject_id JOIN courses c ON c.id=s.course_id JOIN faculty f ON f.id=cs.faculty_id JOIN users u ON u.id=f.user_id";
+        if ("STUDENT".equals(role)) return jdbc.queryForList(base + " JOIN students st ON st.course_id=s.course_id AND st.semester=cs.semester JOIN users su ON su.id=st.user_id WHERE su.email=? ORDER BY FIELD(cs.weekday,'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'),cs.start_time", email);
+        if ("FACULTY".equals(role)) return jdbc.queryForList(base + " WHERE u.email=? ORDER BY FIELD(cs.weekday,'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'),cs.start_time", email);
+        return jdbc.queryForList(base + " ORDER BY FIELD(cs.weekday,'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'),cs.start_time");
+    }
+
+    @PostMapping("/timetable")
+    public Map<String, String> addSchedule(@RequestBody ScheduleRequest request) {
+        jdbc.update("INSERT INTO class_schedules(subject_id,faculty_id,semester,room,weekday,start_time,end_time) VALUES (?,?,?,?,?,?,?)", request.subjectId(), request.facultyId(), request.semester(), request.room(), request.weekday(), request.startTime(), request.endTime());
+        return Map.of("message", "Class scheduled successfully");
+    }
+
     @GetMapping("/marks")
     public List<Map<String, Object>> marks(@RequestParam(required = false) String email) {
         String sql = "SELECT m.id,u.full_name AS student,s.name AS subject,e.name AS exam,m.marks_obtained AS marksObtained,m.maximum_marks AS maximumMarks,m.grade FROM marks m JOIN enrollments en ON en.id=m.enrollment_id JOIN students st ON st.id=en.student_id JOIN users u ON u.id=st.user_id JOIN subjects s ON s.id=en.subject_id JOIN exams e ON e.id=m.exam_id";
@@ -159,4 +173,5 @@ public class HealthController {
     public record AttendanceRequest(Long enrollmentId, String classDate, String status) {}
     public record ExamRequest(String name, String academicYear, String startDate, String endDate) {}
     public record MarksRequest(Long examId, Long enrollmentId, Double maximumMarks, Double marksObtained) {}
+    public record ScheduleRequest(Long subjectId, Long facultyId, Integer semester, String room, String weekday, String startTime, String endTime) {}
 }
