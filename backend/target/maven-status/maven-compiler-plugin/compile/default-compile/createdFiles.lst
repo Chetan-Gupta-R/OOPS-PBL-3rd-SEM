@@ -1,0 +1,16 @@
+com\gmu\erp\AuthController$LoginRequest.class
+com\gmu\erp\HealthController$AttendanceRequest.class
+com\gmu\erp\HealthController$EnrollmentRequest.class
+com\gmu\erp\GmuErpApplication.class
+com\gmu\erp\HealthController$StudentRequest.class
+com\gmu\erp\HealthController$PaymentRequest.class
+com\gmu\erp\PasswordConfig.class
+com\gmu\erp\BootstrapData.class
+com\gmu\erp\HealthController.class
+com\gmu\erp\AuthController.class
+com\gmu\erp\HealthController$CourseRequest.class
+com\gmu\erp\HealthController$ExamRequest.class
+com\gmu\erp\HealthController$SubjectRequest.class
+com\gmu\erp\HealthController$MarksRequest.class
+com\gmu\erp\HealthController$FacultyRequest.class
+com\gmu\erp\HealthController$InvoiceRequest.class
